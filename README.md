@@ -1,4 +1,4 @@
-      Capstone Project RoadMap
+                   Capstone Project RoadMap
                           Eco sort
                  (Smart waste management System)
 Concept
