@@ -55,3 +55,19 @@ Day 28: Wrote project documentation and finalized reports for submission.
 Day 29: Conducted a final debugging session and ensured everything is ready.
 Day 30: Project demonstration and submission.
 
+
+3.4. PUT /api/auth/profile Description: Allows users to update their profile information (name, email, bio).
+
+Access: Private (JWT required)
+
+Request body: JSON object with updated user data.
+
+Responses: Updated user data or Error (404)
+
+3.5. PUT /api/auth/password Description: Allows users to update their password.
+
+Access: Private (JWT required)
+
+Request body: JSON object with current and new password.
+
+Responses: Success message or Error (401)
