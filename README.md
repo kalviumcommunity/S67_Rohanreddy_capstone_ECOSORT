@@ -55,3 +55,9 @@ Day 28: Wrote project documentation and finalized reports for submission.
 Day 29: Conducted a final debugging session and ensured everything is ready.
 Day 30: Project demonstration and submission.
 
+3.3. GET /api/auth/me Description: Retrieves current authenticated user's profile.
+
+Access: Private (JWT required)
+
+Responses: User data or Error (404)
+
