@@ -55,3 +55,16 @@ Day 28: Wrote project documentation and finalized reports for submission.
 Day 29: Conducted a final debugging session and ensured everything is ready.
 Day 30: Project demonstration and submission.
 
+API Documentation 3.1. POST /api/auth/register Description: Registers a new user.
+Access: Public
+
+Request body: JSON object with name, email, and password.
+
+Responses: Success (201) or Error (400)
+
+3.2. POST /api/auth/login Description: Authenticates the user and returns a JWT token.
+
+Access: Public
+
+Request body: JSON object with email and password.
+
