@@ -1,31 +1,31 @@
-import jwt from 'jsonwebtoken'
-import User from '../models/User.js'
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 export const protect = async (req, res, next) => {
-  let token
+  let token;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
+  // Check if the token is provided in the Authorization header
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
-      // Get token from header
-      token = req.headers.authorization.split(' ')[1]
+      // Get the token from the Authorization header
+      token = req.headers.authorization.split(' ')[1];
 
-      // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      // Verify the token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Get user from the token
-      req.user = await User.findById(decoded.id).select('-password')
+      // Attach the user to the request object (excluding password)
+      req.user = await User.findById(decoded.id).select('-password');
 
-      next()
+      // Proceed to the next middleware/route handler
+      next();
     } catch (error) {
-      console.error(error)
-      res.status(401).json({ message: 'Not authorized, token failed' })
+      console.error(error);
+      return res.status(401).json({ message: 'Not authorized, token failed' });
     }
   }
 
+  // If there's no token
   if (!token) {
-    res.status(401).json({ message: 'Not authorized, no token' })
+    return res.status(401).json({ message: 'Not authorized, no token' });
   }
-}
+};

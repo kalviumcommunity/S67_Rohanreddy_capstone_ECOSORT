@@ -55,3 +55,49 @@ Day 28: Wrote project documentation and finalized reports for submission.
 Day 29: Conducted a final debugging session and ensured everything is ready.
 Day 30: Project demonstration and submission.
 
+
+
+3. API Documentation
+3.1. POST /api/auth/register
+Description: Registers a new user.
+
+Access: Public
+
+Request body: JSON object with name, email, and password.
+
+Responses: Success (201) or Error (400)
+
+3.2. POST /api/auth/login
+Description: Authenticates the user and returns a JWT token.
+
+Access: Public
+
+Request body: JSON object with email and password.
+
+Responses: Success with token and user data or Error (401)
+
+3.3. GET /api/auth/me
+Description: Retrieves current authenticated user's profile.
+
+Access: Private (JWT required)
+
+Responses: User data or Error (404)
+
+3.4. PUT /api/auth/profile
+Description: Allows users to update their profile information (name, email, bio).
+
+Access: Private (JWT required)
+
+Request body: JSON object with updated user data.
+
+Responses: Updated user data or Error (404)
+
+3.5. PUT /api/auth/password
+Description: Allows users to update their password.
+
+Access: Private (JWT required)
+
+Request body: JSON object with current and new password.
+
+Responses: Success message or Error (401)
+
