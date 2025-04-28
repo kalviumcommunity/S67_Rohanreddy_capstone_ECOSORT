@@ -12,8 +12,8 @@ const generateToken = (id) => {
   })
 }
 
-// @route   POST /api/auth/register
-// @desc    Register a new user
+// // @route   POST /api/auth/register
+// // @desc    Register a new user
 // // @access  Public
 // router.post('/register', async (req, res) => {
 //   try {
@@ -86,84 +86,84 @@ const generateToken = (id) => {
 // // @route   GET /api/auth/me
 // // @desc    Get current user
 // // @access  Private
-router.get('/me', protect, async (req, res) => {
+// router.get('/me', protect, async (req, res) => {
+//   try {
+//     const user = await User.findById(req.user._id).select('-password')
+    
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' })
+//     }
+    
+//     res.json(user)
+//   } catch (error) {
+//     console.error(error)
+//     res.status(500).json({ message: 'Server error' })
+//   }
+// })
+
+// @route   PUT /api/auth/profile
+// @desc    Update user profile
+// @access  Private
+router.put('/profile', protect, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select('-password')
+    const { name, email, bio } = req.body
+    
+    const user = await User.findById(req.user._id)
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
     
-    res.json(user)
+    // Update fields
+    if (name) user.name = name
+    if (email) user.email = email
+    if (bio !== undefined) user.bio = bio
+    
+    const updatedUser = await user.save()
+    
+    res.json({
+      id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      bio: updatedUser.bio,
+      stats: updatedUser.stats
+    })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Server error' })
   }
 })
 
-// @route   PUT /api/auth/profile
-// @desc    Update user profile
+// @route   PUT /api/auth/password
+// @desc    Update password
 // @access  Private
-// router.put('/profile', protect, async (req, res) => {
-//   try {
-//     const { name, email, bio } = req.body
+router.put('/password', protect, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body
     
-//     const user = await User.findById(req.user._id)
+    const user = await User.findById(req.user._id)
     
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' })
-//     }
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
     
-//     // Update fields
-//     if (name) user.name = name
-//     if (email) user.email = email
-//     if (bio !== undefined) user.bio = bio
+    // Check current password
+    const isMatch = await user.comparePassword(currentPassword)
     
-//     const updatedUser = await user.save()
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Current password is incorrect' })
+    }
     
-//     res.json({
-//       id: updatedUser._id,
-//       name: updatedUser.name,
-//       email: updatedUser.email,
-//       bio: updatedUser.bio,
-//       stats: updatedUser.stats
-//     })
-//   } catch (error) {
-//     console.error(error)
-//     res.status(500).json({ message: 'Server error' })
-//   }
-// })
-
-// // @route   PUT /api/auth/password
-// // @desc    Update password
-// // @access  Private
-// router.put('/password', protect, async (req, res) => {
-//   try {
-//     const { currentPassword, newPassword } = req.body
+    // Update password
+    user.password = newPassword
+    await user.save()
     
-//     const user = await User.findById(req.user._id)
-    
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' })
-//     }
-    
-//     // Check current password
-//     const isMatch = await user.comparePassword(currentPassword)
-    
-//     if (!isMatch) {
-//       return res.status(401).json({ message: 'Current password is incorrect' })
-//     }
-    
-//     // Update password
-//     user.password = newPassword
-//     await user.save()
-    
-//     res.json({ message: 'Password updated successfully' })
-//   } catch (error) {
-//     console.error(error)
-//     res.status(500).json({ message: 'Server error' })
-//   }
-// })
+    res.json({ message: 'Password updated successfully' })
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server error' })
+  }
+})
 
 export default router
 
